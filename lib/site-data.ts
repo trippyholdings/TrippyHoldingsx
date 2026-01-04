@@ -12,11 +12,11 @@ export const siteData = {
   profile: {
     name: "Hussein Adam",
     tagline:
-      "Hi, I’m Hussein Adam — also known as Trippy/Sinvert_. I’m a Roblox developer specializing in scalable LuaU systems, smooth gameplay, and clean UI.",
+      "Hi, I’m Hussein Adam also known as Trippy, I’m a Roblox developer specializing in scalable LuaU systems, smooth gameplay, and clean UI.",
     about:
       "I build polished Roblox experiences with clean, scalable LuaU systems. I focus on gameplay feel, networking sanity, performance, and UI that looks and behaves like a real product. If you want a developer who communicates clearly, ships fast, and keeps the codebase maintainable, I’m your guy.",
     photo:
-      "https://media.discordapp.net/attachments/1374068118883668110/1410366654990403615/IMG_7391.png?format=webp&quality=lossless",
+      "https://cdn.discordapp.com/attachments/1374068118883668110/1457492096070975498/assets_task_01jzgs58y1fnr9q10xj6503znp_1751836191_img_0.webp?ex=695c32ca&is=695ae14a&hm=15fd829a764a1dfdd3aedd43b8ac0904c53f0248fa01eee21e420d03cd4eb413&",
     stats: [
       { value: "3+", label: "Years of Experience" },
       { value: "21M+", label: "Total Visits Contributed" },
@@ -40,7 +40,7 @@ export const siteData = {
       "A-Chassis Tuning",
     ],
     links: {
-      roblox: "https://www.roblox.com/users/00000000/profile",
+      roblox: "https://www.roblox.com/users/1035292126/profile",
     },
   },
   projects: [
@@ -56,58 +56,6 @@ export const siteData = {
       ],
       highlight: "Custom fishing mechanics developed for Pulau-Indo.",
       about: "Custom fishing mechanics developed for Pulau-Indo.",
-    },
-    {
-      variant: "showcase",
-      title: "Pulau-Indo: Mystery Boxes",
-      media: [
-        {
-          type: "image",
-          src: "https://media.discordapp.net/attachments/1374068118883668110/1410367004646359060/image.png?format=webp&quality=lossless",
-        },
-        { type: "video", src: "https://www.youtube.com/watch?v=5hb8wrq1IkQ" },
-      ],
-      highlight: "Mystery box system with drop tables and rewards flow.",
-      about: "Mystery box system with drop tables and rewards flow.",
-    },
-    {
-      variant: "showcase",
-      title: "Pulau-Indo: Voice Chat Phone",
-      media: [
-        {
-          type: "image",
-          src: "https://media.discordapp.net/attachments/1374068118883668110/1410366967673301022/image.png?format=webp&quality=lossless",
-        },
-        { type: "video", src: "https://www.youtube.com/watch?v=8vXQ6ld4a9Q" },
-      ],
-      highlight: "In-world phone UX with voice chat integration.",
-      about: "In-world phone UX with voice chat integration.",
-    },
-    {
-      variant: "showcase",
-      title: "Pulau-Indo: ATM System",
-      media: [
-        {
-          type: "image",
-          src: "https://media.discordapp.net/attachments/1374068118883668110/1410366942364835931/image.png?format=webp&quality=lossless",
-        },
-        { type: "video", src: "https://www.youtube.com/watch?v=bzT0yNQmVvI" },
-      ],
-      highlight: "ATM system for deposits, withdrawals, and UI flow.",
-      about: "ATM system for deposits, withdrawals, and UI flow.",
-    },
-    {
-      variant: "showcase",
-      title: "Pulau-Indo: Vehicle System",
-      media: [
-        {
-          type: "image",
-          src: "https://media.discordapp.net/attachments/1374068118883668110/1410366915613691965/image.png?format=webp&quality=lossless",
-        },
-        { type: "video", src: "https://www.youtube.com/watch?v=48h1FXi3o9U" },
-      ],
-      highlight: "Vehicle spawning, ownership, and gameplay integration.",
-      about: "Vehicle spawning, ownership, and gameplay integration.",
     },
     {
       variant: "showcase",
@@ -144,3 +92,4 @@ export const siteData = {
 } as const
 
 export type SiteData = typeof siteData
+
