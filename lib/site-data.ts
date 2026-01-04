@@ -1,11 +1,13 @@
 export type MediaItem = { type: "image" | "video"; src: string }
 
 export type ProjectItem = {
-  variant: "showcase" | string
+  variant: "showcase" | "project"
   title: string
+  headline: string
   media: MediaItem[]
-  highlight: string
-  about: string
+  summary: string
+  details: string
+  link?: string
 }
 
 export const siteData = {
@@ -47,6 +49,7 @@ export const siteData = {
     {
       variant: "showcase",
       title: "Pulau-Indo: Fishing System",
+      headline: "Responsive fishing gameplay loop",
       media: [
         {
           type: "image",
@@ -54,12 +57,14 @@ export const siteData = {
         },
         { type: "video", src: "https://www.youtube.com/watch?v=0PMvbL0X2oA" },
       ],
-      highlight: "Custom fishing mechanics developed for Pulau-Indo.",
-      about: "Custom fishing mechanics developed for Pulau-Indo.",
+      summary: "Custom fishing mechanics built for Pulau-Indo.",
+      details:
+        "I designed and implemented a responsive fishing system with timing-based inputs, rarity tables, and server-authoritative anti-exploit checks tailored for Pulau-Indo.",
     },
     {
       variant: "showcase",
-      title: "Buckshot!",
+      title: "Buckshot! Minigame",
+      headline: "Quick-fire PvP experience",
       media: [
         { type: "video", src: "https://www.youtube.com/watch?v=ZbhnuObByh8" },
         {
@@ -67,12 +72,13 @@ export const siteData = {
           src: "https://media.discordapp.net/attachments/1374068118883668110/1410367097527341146/image.png?format=webp&quality=lossless",
         },
       ],
-      highlight: "Developed a simplified Buckshot-inspired minigame for Pulau-Indo.",
-      about: "Casual PvP minigame with items and simple mechanics.",
+      summary: "Simplified Buckshot-inspired PvP built inside Pulau-Indo.",
+      details: "Lightweight loadout selection, short rounds, and snappy hit detection optimized for quick matchmaking inside the main experience.",
     },
     {
       variant: "showcase",
       title: "Shadow Boxing!",
+      headline: "KO-ready boxing loop",
       media: [
         { type: "video", src: "https://www.youtube.com/watch?v=SPy6t3L-9YY" },
         {
@@ -80,8 +86,41 @@ export const siteData = {
           src: "https://media.discordapp.net/attachments/1374068118883668110/1410367032289005729/image.png?format=webp&quality=lossless",
         },
       ],
-      highlight: "Created a Shadow Boxing minigame with KO animations, state management, and anti-cheat measures.",
-      about: "A fast-paced boxing minigame developed for Pulau-Indo.",
+      summary: "Fast-paced boxing minigame for Pulau-Indo.",
+      details:
+        "Built state-driven combat with stamina, stun windows, KO cinematics, and anti-cheat checks to keep gameplay fair in public lobbies.",
+    },
+    {
+      variant: "project",
+      title: "Neon Drift",
+      headline: "Open-world driving RPG",
+      media: [
+        {
+          type: "image",
+          src: "https://media.discordapp.net/attachments/1374068118883668110/1458045983220973670/neon-drift.png?format=webp&quality=lossless",
+        },
+        { type: "video", src: "https://www.youtube.com/watch?v=7e3_u1pUZpM" },
+      ],
+      summary: "A Roblox driving RPG with progression, trading, and live events.",
+      details:
+        "I led systems design and engineering: vehicle tuning (A-Chassis), dynamic economies, seasonal events, and live ops tooling. Built server-authoritative racing, matchmaking, and telemetry to keep sessions stable at scale.",
+      link: "https://www.roblox.com/games/11992788872/Neon-Drift",
+    },
+    {
+      variant: "project",
+      title: "Arcane Arena",
+      headline: "Competitive ability battler",
+      media: [
+        { type: "video", src: "https://www.youtube.com/watch?v=5YCFy9J6mHQ" },
+        {
+          type: "image",
+          src: "https://media.discordapp.net/attachments/1374068118883668110/1458046140815663135/arcane-arena.png?format=webp&quality=lossless",
+        },
+      ],
+      summary: "Team-based arena combat with bespoke ability kits and polished VFX.",
+      details:
+        "Implemented modular ability pipelines (wind-up, execution, resolve), rollback-friendly movement prediction, and expressive UI with clarity-focused VFX/SFX. Supported events, ranked play, and spectating tools.",
+      link: "https://www.roblox.com/games/9483746282/Arcane-Arena",
     },
   ] as ProjectItem[],
   contact: {

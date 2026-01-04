@@ -24,17 +24,28 @@ const initialState: ThemeProviderState = {
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
 
 export function ThemeProvider({ children, defaultTheme = "dark" }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(defaultTheme)
+  const [theme, setThemeState] = useState<Theme>(defaultTheme)
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem("theme") as Theme | null
+    if (saved === "dark" || saved === "light") {
+      setThemeState(saved)
+      return
+    }
+    setThemeState(defaultTheme)
+  }, [defaultTheme])
 
   useEffect(() => {
     const root = window.document.documentElement
     root.classList.remove("light", "dark")
     root.classList.add(theme)
+    root.setAttribute("data-theme", theme)
+    window.localStorage.setItem("theme", theme)
   }, [theme])
 
   const value = {
     theme,
-    setTheme: (theme: Theme) => setTheme(theme),
+    setTheme: (nextTheme: Theme) => setThemeState(nextTheme),
   }
 
   return <ThemeProviderContext.Provider value={value}>{children}</ThemeProviderContext.Provider>
