@@ -52,7 +52,7 @@ export const siteData = {
           type: "image",
           src: "https://media.discordapp.net/attachments/1374068118883668110/1410367022501511258/image.png?format=webp&quality=lossless",
         },
-        { type: "video", src: "https://www.youtube.com/watch?v=0PMvbL0X2oA" },
+        { type: "video", src: "https://www.youtube.com/watch?v=_AslHde6hi8" },
       ],
       highlight: "Custom fishing mechanics developed for Pulau-Indo.",
       about: "Custom fishing mechanics developed for Pulau-Indo.",
@@ -92,4 +92,5 @@ export const siteData = {
 } as const
 
 export type SiteData = typeof siteData
+
 
