@@ -64,11 +64,9 @@ export default function Hero() {
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
 
-              <Button size="lg" variant="outline" asChild>
-                <a href={`mailto:${siteData.contact.email}`}>
-                  <Mail className="mr-2 h-4 w-4" />
-                  Hire Me
-                </a>
+              <Button size="lg" variant="outline" onClick={() => scrollToSection("contact")}>
+                <Mail className="mr-2 h-4 w-4" />
+                Hire Me
               </Button>
             </div>
           </motion.div>

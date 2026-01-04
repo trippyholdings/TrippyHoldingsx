@@ -3,6 +3,7 @@ export type MediaItem = { type: "image" | "video"; src: string }
 export type ProjectItem = {
   variant: "showcase" | "project"
   title: string
+  header?: string
   headline: string
   media: MediaItem[]
   summary: string
@@ -49,6 +50,7 @@ export const siteData = {
     {
       variant: "showcase",
       title: "Pulau-Indo: Fishing System",
+      header: "Fishing System",
       headline: "Responsive fishing gameplay loop",
       media: [
         {
@@ -64,6 +66,7 @@ export const siteData = {
     {
       variant: "showcase",
       title: "Buckshot! Minigame",
+      header: "Buckshot!",
       headline: "Quick-fire PvP experience",
       media: [
         { type: "video", src: "https://www.youtube.com/watch?v=ZbhnuObByh8" },
@@ -78,6 +81,7 @@ export const siteData = {
     {
       variant: "showcase",
       title: "Shadow Boxing!",
+      header: "Shadow Boxing",
       headline: "KO-ready boxing loop",
       media: [
         { type: "video", src: "https://www.youtube.com/watch?v=SPy6t3L-9YY" },
@@ -93,6 +97,7 @@ export const siteData = {
     {
       variant: "project",
       title: "Neon Drift",
+      header: "Neon Drift",
       headline: "Open-world driving RPG",
       media: [
         {
@@ -109,6 +114,7 @@ export const siteData = {
     {
       variant: "project",
       title: "Arcane Arena",
+      header: "Arcane Arena",
       headline: "Competitive ability battler",
       media: [
         { type: "video", src: "https://www.youtube.com/watch?v=5YCFy9J6mHQ" },
@@ -129,6 +135,21 @@ export const siteData = {
     formspree: "https://formspree.io/f/mzzabngv",
   },
 } as const
+
+export const projectVariantTemplate: ProjectItem = {
+  variant: "project",
+  title: "Project Name",
+  header: "Project Display Heading",
+  headline: "1–2 sentence hook that explains the core of the experience.",
+  media: [
+    { type: "image", src: "https://example.com/cover-image.png" },
+    { type: "video", src: "https://www.youtube.com/watch?v=VIDEO_ID" },
+  ],
+  summary: "Short description that appears in cards (1–2 sentences).",
+  details:
+    "Long-form description for the modal: what you built, systems you owned, performance targets, and any live-ops or tooling highlights.",
+  link: "https://www.roblox.com/games/<GAME_ID>/Game-Name",
+}
 
 export type SiteData = typeof siteData
 

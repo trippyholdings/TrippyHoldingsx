@@ -128,7 +128,12 @@ export default function Projects() {
                 </div>
                 <div className="p-6 space-y-3">
                   <div className="flex items-center justify-between gap-3">
-                    <h3 className="text-lg font-semibold">{p.title}</h3>
+                    <div className="space-y-1">
+                      <p className="text-xs uppercase tracking-wide text-primary/80 font-semibold">
+                        {p.header ?? p.title}
+                      </p>
+                      <h3 className="text-lg font-semibold leading-tight">{p.title}</h3>
+                    </div>
                     <span className="text-xs uppercase tracking-wide text-muted-foreground rounded-full border px-2 py-1">
                       {p.variant === "project" ? "Project" : "Showcase"}
                     </span>
