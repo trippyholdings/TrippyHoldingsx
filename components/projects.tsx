@@ -42,7 +42,14 @@ function MediaView({ item }: { item: MediaItem }) {
 
   return (
     <div className="w-full overflow-hidden rounded-xl border bg-muted">
-      <img src={item.src} alt="Project media" className="w-full h-auto object-cover" />
+      <img
+        src={item.src}
+        alt="Project media"
+        className="w-full h-auto object-cover"
+        onError={(e) => {
+          e.currentTarget.src = "/placeholder.jpg"
+        }}
+      />
     </div>
   )
 }
@@ -105,12 +112,24 @@ export default function Projects() {
               <Card className="h-full cursor-pointer hover:shadow-lg transition-shadow" onClick={() => openProject(p)}>
                 <CardContent className="p-0">
                   <div className="aspect-video bg-muted overflow-hidden rounded-t-xl border-b">
-                    {p.media?.[0]?.type === "image" ? (
-                      <img src={p.media[0].src} alt={p.title} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                        Video Preview
-                      </div>
+                    {p.media?.[0]?.type === "image" && (
+                      <img
+                        src={p.media[0].src}
+                        alt={p.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.src = "/placeholder.jpg"
+                        }}
+                      />
+                    )}
+                    {p.media?.[0]?.type === "video" && (
+                      <iframe
+                        src={toYouTubeEmbed(p.media[0].src)}
+                        title={`${p.title} preview`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="w-full h-full"
+                      />
                     )}
                   </div>
                   <div className="p-6">
