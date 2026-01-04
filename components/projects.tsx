@@ -56,7 +56,7 @@ function MediaView({ item }: { item: MediaItem }) {
 
 export default function Projects() {
   const projects = siteData.projects
-  const showcases = projects.filter((p) => p.variant === "showcase")
+  const showcases = projects.filter((p) => (p.variant ?? "showcase") === "showcase")
   const fullProjects = projects.filter((p) => p.variant === "project")
   const [open, setOpen] = useState(false)
   const [activeProject, setActiveProject] = useState<ProjectItem | null>(null)
@@ -89,6 +89,11 @@ export default function Projects() {
         <h3 className="text-2xl font-semibold">{title}</h3>
         <p className="text-muted-foreground max-w-2xl">{description}</p>
       </div>
+      {!items.length && (
+        <div className="w-full rounded-xl border bg-muted/30 px-4 py-6 text-center text-sm text-muted-foreground">
+          Nothing to show yet—new items coming soon.
+        </div>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {items.map((p, idx) => (
           <motion.div
