@@ -85,12 +85,13 @@ export const siteData = {
     },
   ] as ProjectItem[],
   contact: {
-    email: "husseinsocool99@gmail.com",
+    email: "trippyholdings@gmail.com",
     discord: "Sinvert_",
     formspree: "https://formspree.io/f/mzzabngv",
   },
 } as const
 
 export type SiteData = typeof siteData
+
 
 
