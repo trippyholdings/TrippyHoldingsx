@@ -16,12 +16,10 @@ export default function TechStack() {
       description: "Core languages for systems and application development",
       skills: [
         { name: "C++", level: 90 },
-        { name: "C", level: 85 },
         { name: "Java", level: 88 },
-        { name: "Ruby", level: 82 },
         { name: "Python", level: 85 },
-        { name: "TypeScript", level: 90 },
-        { name: "JavaScript", level: 90 },
+        { name: "TypeScript", level: 90 }
+        { name: "LuaU", level: 90 },,
       ],
     },
     concepts: {
