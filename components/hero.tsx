@@ -81,7 +81,14 @@ export default function Hero() {
           >
             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5 rounded-full" />
             <div className="absolute inset-4 bg-muted rounded-full overflow-hidden border">
-              <img src={prof.photo} alt={`${prof.name} portrait`} className="w-full h-full object-cover" />
+              <img
+                src={prof.photo}
+                alt={`${prof.name} portrait`}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.src = "/placeholder-user.jpg"
+                }}
+              />
             </div>
           </motion.div>
         </div>

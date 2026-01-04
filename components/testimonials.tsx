@@ -18,7 +18,7 @@ export default function Testimonials() {
       name: "Sarah Johnson",
       position: "Product Manager at TechCorp",
       content:
-        "Working with MemoryLeaked was an absolute pleasure. They delivered our project on time and exceeded our expectations in terms of quality and functionality. Their attention to detail and problem-solving skills are exceptional.",
+        "Working with Hussein Adam was an absolute pleasure. He delivered our project on time and exceeded our expectations in terms of quality and functionality. His attention to detail and problem-solving skills are exceptional.",
       rating: 5,
       image: "/placeholder.svg?height=100&width=100",
     },
