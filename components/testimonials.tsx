@@ -22,42 +22,6 @@ export default function Testimonials() {
       rating: 5,
       image: "/placeholder.svg?height=100&width=100",
     },
-    {
-      id: 2,
-      name: "Michael Chen",
-      position: "CTO at StartupX",
-      content:
-        "MemoryLeaked helped us rebuild our entire platform from the ground up. Their technical expertise and ability to understand our business needs resulted in a product that has significantly improved our user engagement and conversion rates.",
-      rating: 5,
-      image: "/placeholder.svg?height=100&width=100",
-    },
-    {
-      id: 3,
-      name: "Emily Rodriguez",
-      position: "Founder of DesignHub",
-      content:
-        "I was impressed by MemoryLeaked's ability to translate our design vision into a fully functional website. They were responsive, professional, and provided valuable suggestions that improved the overall user experience.",
-      rating: 4.5,
-      image: "/placeholder.svg?height=100&width=100",
-    },
-    {
-      id: 4,
-      name: "David Kim",
-      position: "Marketing Director at GrowthCo",
-      content:
-        "MemoryLeaked developed a custom analytics dashboard for our marketing team that has transformed how we track and optimize our campaigns. Their solution was elegant, intuitive, and exactly what we needed.",
-      rating: 5,
-      image: "/placeholder.svg?height=100&width=100",
-    },
-    {
-      id: 5,
-      name: "Lisa Patel",
-      position: "E-commerce Manager at RetailPlus",
-      content:
-        "The e-commerce platform developed by MemoryLeaked has been a game-changer for our business. It's fast, secure, and our customers love the seamless shopping experience. We've seen a 40% increase in online sales since launch.",
-      rating: 4.5,
-      image: "/placeholder.svg?height=100&width=100",
-    },
   ]
 
   const renderStars = (rating) => {
