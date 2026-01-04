@@ -198,17 +198,52 @@ export default function Projects() {
           <div className="w-20 h-1 bg-primary mx-auto" />
         </motion.div>
 
-        <div className="space-y-16">
-          {section(
-            "Systems & Mechanics (Showcases)",
-            showcases,
-            "Smaller scoped systems and mechanics built to be performant, modular, and easy to slot into larger experiences.",
-          )}
-          {section(
-            "Full Experiences (Projects)",
-            fullProjects,
-            "Complete games and live experiences with production-ready networking, polish, and links to play them.",
-          )}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.map((p, idx) => (
+            <motion.div
+              key={`${p.title}-${idx}`}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              transition={{ duration: 0.45, delay: idx * 0.03 }}
+              variants={fadeIn}
+            >
+              <Card className="h-full cursor-pointer hover:shadow-lg transition-shadow" onClick={() => openProject(p)}>
+                <CardContent className="p-0">
+                  <div className="aspect-video bg-muted overflow-hidden rounded-t-xl border-b">
+                    {p.media?.[0]?.type === "image" && (
+                      <img
+                        src={p.media[0].src}
+                        alt={p.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.src = "/placeholder.jpg"
+                        }}
+                      />
+                    )}
+                    {p.media?.[0]?.type === "video" && (
+                      <iframe
+                        src={toYouTubeEmbed(p.media[0].src)}
+                        title={`${p.title} preview`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="w-full h-full"
+                      />
+                    )}
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-lg font-semibold">{p.title}</h3>
+                    <p className="text-sm text-muted-foreground mt-2">{p.highlight}</p>
+                    <div className="mt-4">
+                      <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); openProject(p) }}>
+                        View Media
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
         </div>
 
         <Dialog open={open} onOpenChange={setOpen}>
