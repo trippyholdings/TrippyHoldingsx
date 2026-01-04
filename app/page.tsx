@@ -9,8 +9,8 @@ import Footer from "@/components/footer"
 import Navbar from "@/components/navbar"
 
 export const metadata: Metadata = {
-  title: "MemoryLeaked | Portfolio",
-  description: "Professional portfolio of MemoryLeaked - Software Developer",
+  title: "Hussein Adam | Portfolio",
+  description: "Portfolio of Hussein Adam - Game Developer",
 }
 
 export default function Home() {
