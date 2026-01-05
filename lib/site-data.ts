@@ -6,6 +6,9 @@ export type ProjectItem = {
   variant: ProjectVariant
   title: string
 
+  // Roblox place to fetch live stats
+  placeId?: string
+
   // Optional display fields used by some templates
   header?: string
   headline?: string
@@ -22,24 +25,6 @@ export type ProjectItem = {
 
   // Optional external link
   link?: string
-
-  // If you keep a template project inside the list
-  isTemplate?: boolean
-}
-
-export const projectVariantTemplate: ProjectItem = {
-  variant: "project",
-  title: "Project Name",
-  header: "Project Display Heading",
-  headline: "1–2 sentence hook that explains the core of the experience.",
-  media: [
-    { type: "image", src: "https://example.com/cover-image.png" },
-    { type: "video", src: "https://www.youtube.com/watch?v=VIDEO_ID" },
-  ],
-  summary: "Short description that appears in cards (1–2 sentences).",
-  details:
-    "Long-form description for the modal: what you built, systems you owned, performance targets, and any live-ops or tooling highlights.",
-  link: "https://www.roblox.com/games/<GAME_ID>/Game-Name",
 }
 
 export const siteData = {
@@ -85,6 +70,7 @@ export const siteData = {
       title: "Pulau-Indo: Fishing System",
       header: "Fishing System",
       headline: "Responsive fishing gameplay loop",
+      placeId: "7061896812",
       media: [
         {
           type: "image",
@@ -99,12 +85,14 @@ export const siteData = {
       highlight: "Custom fishing mechanics built for Pulau-Indo.",
       about:
         "Designed and implemented a responsive fishing system with timing-based inputs, rarity tables, and server-authoritative anti-exploit checks tailored for Pulau-Indo.",
+      link: "https://www.roblox.com/games/7061896812/Pulau-Indo",
     },
     {
       variant: "showcase",
       title: "Buckshot! Minigame",
       header: "Buckshot!",
       headline: "Quick-fire PvP experience",
+      placeId: "7061896812",
       media: [
         { type: "video", src: "https://www.youtube.com/watch?v=ZbhnuObByh8" },
         {
@@ -118,12 +106,14 @@ export const siteData = {
       highlight: "Simplified Buckshot-inspired PvP built inside Pulau-Indo.",
       about:
         "Lightweight loadout selection, short rounds, and snappy hit detection optimized for quick matchmaking inside the main experience.",
+      link: "https://www.roblox.com/games/7061896812/Pulau-Indo",
     },
     {
       variant: "showcase",
       title: "Shadow Boxing!",
       header: "Shadow Boxing",
       headline: "KO-ready boxing loop",
+      placeId: "7061896812",
       media: [
         { type: "video", src: "https://www.youtube.com/watch?v=SPy6t3L-9YY" },
         {
@@ -137,23 +127,9 @@ export const siteData = {
       highlight: "Fast-paced boxing minigame for Pulau-Indo.",
       about:
         "Built state-driven combat with stamina, stun windows, KO cinematics, and anti-cheat checks to keep gameplay fair in public lobbies.",
+      link: "https://www.roblox.com/games/7061896812/Pulau-Indo",
     },
 
-    // Keep your template if you want
-    {
-      ...projectVariantTemplate,
-      title: "Project Template Example",
-      header: "Template (Use Me)",
-      headline: "Copy this structure to add new Roblox projects quickly.",
-      media: [
-        { type: "image", src: "https://placehold.co/1200x675/png" },
-        { type: "video", src: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" },
-      ],
-      summary: "Reference card showing the fields needed to add new projects.",
-      details:
-        "Replace placeholder media with your own, update the headline to your hook, summarize in 1–2 sentences, and use details for the deep dive. Add your Roblox link so the Play button appears.",
-      isTemplate: true,
-    },
   ] as ProjectItem[],
 
   contact: {
