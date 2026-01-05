@@ -67,6 +67,7 @@ export default function Navbar() {
             <Button asChild>
               <a href={`mailto:${siteData.contact.email}`}>Hire Me</a>
             </Button>
+            <Button onClick={() => scrollToSection("contact")}>Hire Me</Button>
           </nav>
 
           <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
