@@ -27,7 +27,7 @@ export default function Navbar() {
   }
 
   const navLinks = [
-    { name: "Projects", href: "projects" },
+    { name: "Published games", href: "published-games" },
     { name: "About", href: "about" },
     { name: "Contact", href: "contact" },
   ]
