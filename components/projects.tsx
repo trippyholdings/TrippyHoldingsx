@@ -199,7 +199,7 @@ export default function Projects() {
                         <h3 className="text-lg font-semibold leading-tight">{p.title}</h3>
                       </div>
                       <Badge variant="secondary" className="uppercase tracking-wide">
-                        {p.variant === "project" ? "Project" : "Showcase"}
+                        {p.isTemplate ? "Template" : p.variant === "project" ? "Project" : "Showcase"}
                       </Badge>
                     </div>
                     {(p.headline ?? p.highlight) && (
@@ -209,25 +209,6 @@ export default function Projects() {
                       <p className="text-sm text-muted-foreground">{p.summary ?? p.about}</p>
                     )}
                   </div>
-
-                  {p.placeId && (
-                    <div className="flex flex-wrap items-center gap-3 text-xs">
-                      <span className="rounded-full bg-muted px-3 py-1 font-medium text-foreground">
-                        {statsLoaded
-                          ? stats[p.placeId]?.playing !== undefined
-                            ? `${stats[p.placeId]?.playing?.toLocaleString() ?? 0} players online`
-                            : "Live players unavailable"
-                          : "Fetching players..."}
-                      </span>
-                      <span className="rounded-full bg-muted px-3 py-1 font-medium text-foreground">
-                        {statsLoaded
-                          ? stats[p.placeId]?.likeRatio !== undefined
-                            ? `${stats[p.placeId]?.likeRatio}% like rating`
-                            : "Like data unavailable"
-                          : "Fetching likes..."}
-                      </span>
-                    </div>
-                  )}
 
                   {p.link && (
                     <div className="flex items-center gap-2 text-sm font-semibold text-primary">
@@ -299,9 +280,15 @@ export default function Projects() {
 
         <div className="space-y-12">
           {section(
-            "Projects",
-            projects,
-            "Playable builds and systems with quick media previews, live player counts, like ratios, and direct Roblox links.",
+            "Showcases",
+            showcases,
+            "Hands-on system demos with quick summaries, direct Roblox links, and media you can preview at a glance.",
+          )}
+
+          {section(
+            "Projects & Templates",
+            fullProjects,
+            "Playable builds and reusable templates, complete with immediate Roblox links and deeper details in the modal view.",
           )}
         </div>
 
