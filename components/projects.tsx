@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { motion } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -56,11 +56,11 @@ function MediaView({ item }: { item: MediaItem }) {
 
 export default function Projects() {
   const projects = siteData.projects
-  const showcases = projects.filter((p) => (p.variant ?? "showcase") === "showcase")
-  const fullProjects = projects.filter((p) => p.variant === "project")
   const [open, setOpen] = useState(false)
   const [activeProject, setActiveProject] = useState<ProjectItem | null>(null)
   const [activeIndex, setActiveIndex] = useState(0)
+  const [stats, setStats] = useState<Record<string, { playing?: number; likeRatio?: number }>>({})
+  const [statsLoaded, setStatsLoaded] = useState(false)
 
   const fadeIn = useMemo(
     () => ({
@@ -75,6 +75,64 @@ export default function Projects() {
     setActiveIndex(0)
     setOpen(true)
   }
+
+  useEffect(() => {
+    const placeIds = Array.from(new Set(projects.map((p) => p.placeId).filter(Boolean))) as string[]
+    if (!placeIds.length) return
+
+    let cancelled = false
+
+    const fetchStats = async () => {
+      try {
+        const placesRes = await fetch(
+          `https://games.roblox.com/v1/games/multiget-place-details?placeIds=${placeIds.join(",")}`,
+        )
+        if (!placesRes.ok) throw new Error(`place details failed with ${placesRes.status}`)
+        const placesJson = await placesRes.json()
+
+        const universeIds = placesJson.map((p: any) => p.universeId).filter(Boolean)
+        let gamesData: any[] = []
+        if (universeIds.length) {
+          const gamesRes = await fetch(`https://games.roblox.com/v1/games?universeIds=${universeIds.join(",")}`)
+          if (gamesRes.ok) {
+            const gamesJson = await gamesRes.json()
+            gamesData = gamesJson?.data ?? []
+          }
+        }
+
+        const gameMap = new Map(gamesData.map((g: any) => [String(g.id), g]))
+        const nextStats: Record<string, { playing?: number; likeRatio?: number }> = {}
+
+        placesJson.forEach((p: any) => {
+          const playing = typeof p.playing === "number" ? p.playing : undefined
+          const game = gameMap.get(String(p.universeId))
+
+          let likeRatio: number | undefined
+          if (game && typeof game.upVotes === "number" && typeof game.downVotes === "number") {
+            const total = game.upVotes + game.downVotes
+            if (total > 0) {
+              likeRatio = Math.round((game.upVotes / total) * 100)
+            }
+          }
+
+          nextStats[String(p.placeId)] = { playing, likeRatio }
+        })
+
+        if (!cancelled) {
+          setStats(nextStats)
+          setStatsLoaded(true)
+        }
+      } catch (error) {
+        console.error("Failed to load Roblox stats", error)
+        if (!cancelled) setStatsLoaded(true)
+      }
+    }
+
+    fetchStats()
+    return () => {
+      cancelled = true
+    }
+  }, [projects])
 
   const media = activeProject?.media ?? []
   const canPrev = activeIndex > 0
@@ -141,7 +199,7 @@ export default function Projects() {
                         <h3 className="text-lg font-semibold leading-tight">{p.title}</h3>
                       </div>
                       <Badge variant="secondary" className="uppercase tracking-wide">
-                        {p.isTemplate ? "Template" : p.variant === "project" ? "Project" : "Showcase"}
+                        {p.variant === "project" ? "Project" : "Showcase"}
                       </Badge>
                     </div>
                     {(p.headline ?? p.highlight) && (
@@ -151,6 +209,25 @@ export default function Projects() {
                       <p className="text-sm text-muted-foreground">{p.summary ?? p.about}</p>
                     )}
                   </div>
+
+                  {p.placeId && (
+                    <div className="flex flex-wrap items-center gap-3 text-xs">
+                      <span className="rounded-full bg-muted px-3 py-1 font-medium text-foreground">
+                        {statsLoaded
+                          ? stats[p.placeId]?.playing !== undefined
+                            ? `${stats[p.placeId]?.playing?.toLocaleString() ?? 0} players online`
+                            : "Live players unavailable"
+                          : "Fetching players..."}
+                      </span>
+                      <span className="rounded-full bg-muted px-3 py-1 font-medium text-foreground">
+                        {statsLoaded
+                          ? stats[p.placeId]?.likeRatio !== undefined
+                            ? `${stats[p.placeId]?.likeRatio}% like rating`
+                            : "Like data unavailable"
+                          : "Fetching likes..."}
+                      </span>
+                    </div>
+                  )}
 
                   {p.link && (
                     <div className="flex items-center gap-2 text-sm font-semibold text-primary">
@@ -222,15 +299,9 @@ export default function Projects() {
 
         <div className="space-y-12">
           {section(
-            "Showcases",
-            showcases,
-            "Hands-on system demos with quick summaries, direct Roblox links, and media you can preview at a glance.",
-          )}
-
-          {section(
-            "Projects & Templates",
-            fullProjects,
-            "Playable builds and reusable templates, complete with immediate Roblox links and deeper details in the modal view.",
+            "Projects",
+            projects,
+            "Playable builds and systems with quick media previews, live player counts, like ratios, and direct Roblox links.",
           )}
         </div>
 
@@ -271,6 +342,25 @@ export default function Projects() {
                   <p className="text-sm font-semibold text-foreground">{activeProject.headline}</p>
                   <p className="text-muted-foreground">{activeProject.details}</p>
                 </div>
+
+                {activeProject.placeId && (
+                  <div className="flex flex-wrap items-center gap-3 text-sm">
+                    <Badge variant="secondary">
+                      {statsLoaded
+                        ? stats[activeProject.placeId]?.playing !== undefined
+                          ? `${stats[activeProject.placeId]?.playing?.toLocaleString() ?? 0} players online`
+                          : "Live players unavailable"
+                        : "Fetching players..."}
+                    </Badge>
+                    <Badge variant="secondary">
+                      {statsLoaded
+                        ? stats[activeProject.placeId]?.likeRatio !== undefined
+                          ? `${stats[activeProject.placeId]?.likeRatio}% like rating`
+                          : "Like data unavailable"
+                        : "Fetching likes..."}
+                    </Badge>
+                  </div>
+                )}
 
                 {activeProject.link && (
                   <div className="flex justify-end">
