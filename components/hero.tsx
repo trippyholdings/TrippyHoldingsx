@@ -64,11 +64,9 @@ export default function Hero() {
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
 
-              <Button size="lg" variant="outline" asChild>
-                <a href={`mailto:${siteData.contact.email}`}>
-                  <Mail className="mr-2 h-4 w-4" />
-                  Hire Me
-                </a>
+              <Button size="lg" variant="outline" onClick={() => scrollToSection("contact")}>
+                <Mail className="mr-2 h-4 w-4" />
+                Hire Me
               </Button>
             </div>
           </motion.div>
@@ -81,7 +79,14 @@ export default function Hero() {
           >
             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5 rounded-full" />
             <div className="absolute inset-4 bg-muted rounded-full overflow-hidden border">
-              <img src={prof.photo} alt={`${prof.name} portrait`} className="w-full h-full object-cover" />
+              <img
+                src={prof.photo}
+                alt={`${prof.name} portrait`}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.src = "/placeholder-user.jpg"
+                }}
+              />
             </div>
           </motion.div>
         </div>
