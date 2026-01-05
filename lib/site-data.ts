@@ -2,6 +2,12 @@ export type MediaItem = { type: "image" | "video"; src: string }
 
 export type ProjectVariant = "showcase" | "project"
 
+export type ProjectStats = {
+  playing?: number
+  visits?: number
+  likePercentage?: number
+}
+
 export type ProjectItem = {
   variant: ProjectVariant
   title: string
@@ -21,6 +27,9 @@ export type ProjectItem = {
   about?: string
   summary?: string
   details?: string
+
+  // Live stats (hydrated client-side)
+  stats?: ProjectStats
 
   // Optional external link
   link?: string
@@ -125,6 +134,26 @@ export const siteData = {
       highlight: "Fast-paced boxing minigame for Pulau-Indo.",
       about:
         "Built state-driven combat with stamina, stun windows, KO cinematics, and anti-cheat checks to keep gameplay fair in public lobbies.",
+      link: "https://www.roblox.com/games/7061896812/Pulau-Indo",
+    },
+    {
+      variant: "project",
+      title: "Pulau-Indo (Live)",
+      header: "Published Game",
+      headline: "Live experience with active playerbase",
+      placeId: "7061896812",
+      media: [
+        {
+          type: "image",
+          src: "https://media.discordapp.net/attachments/1374068118883668110/1410367022501511258/image.png?format=webp&quality=lossless",
+        },
+      ],
+      summary: "Live Roblox experience showcasing the full gameplay loop.",
+      details:
+        "End-to-end experience including combat, fishing, and matchmaking systems with production-ready networking and UI polish.",
+      highlight: "Live Roblox experience with persistent systems.",
+      about:
+        "End-to-end experience including combat, fishing, and matchmaking systems with production-ready networking and UI polish.",
       link: "https://www.roblox.com/games/7061896812/Pulau-Indo",
     },
   ] as ProjectItem[],
