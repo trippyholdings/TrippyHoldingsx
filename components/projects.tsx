@@ -140,7 +140,7 @@ export default function Projects() {
                       <h3 className="text-lg font-semibold leading-tight">{p.title}</h3>
                     </div>
                     <span className="text-xs uppercase tracking-wide text-muted-foreground rounded-full border px-2 py-1">
-                      {p.variant === "project" ? "Project" : "Showcase"}
+                      {p.isTemplate ? "Template" : p.variant === "project" ? "Project" : "Showcase"}
                     </span>
                   </div>
                   <p className="text-sm font-medium">{p.headline}</p>
