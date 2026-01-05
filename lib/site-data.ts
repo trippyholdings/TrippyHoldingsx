@@ -2,6 +2,12 @@ export type MediaItem = { type: "image" | "video"; src: string }
 
 export type ProjectVariant = "showcase" | "project"
 
+export type ProjectStats = {
+  playing?: number
+  visits?: number
+  likePercentage?: number
+}
+
 export type ProjectItem = {
   variant: ProjectVariant
   title: string
@@ -21,6 +27,9 @@ export type ProjectItem = {
   about?: string
   summary?: string
   details?: string
+
+  // Live stats (hydrated client-side)
+  stats?: ProjectStats
 
   // Optional external link
   link?: string
@@ -65,7 +74,7 @@ export const siteData = {
 
   projects: [
     {
-      variant: "showcase",
+      variant: "project",
       title: "Pulau-Indo: Fishing System",
       header: "Fishing System",
       headline: "Responsive fishing gameplay loop",

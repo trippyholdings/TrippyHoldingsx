@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { ChevronLeft, ChevronRight, ExternalLink } from "lucide-react"
-import { siteData, type MediaItem, type ProjectItem } from "@/lib/site-data"
+import { siteData, type MediaItem, type ProjectItem, type ProjectStats } from "@/lib/site-data"
 
 function toYouTubeEmbed(url: string) {
   try {
@@ -59,8 +59,8 @@ export default function Projects() {
   const [open, setOpen] = useState(false)
   const [activeProject, setActiveProject] = useState<ProjectItem | null>(null)
   const [activeIndex, setActiveIndex] = useState(0)
-  const [stats, setStats] = useState<Record<string, { playing?: number; likeRatio?: number }>>({})
-  const [statsLoaded, setStatsLoaded] = useState(false)
+  const [stats, setStats] = useState<Record<string, ProjectStats>>({})
+  const [statsStatus, setStatsStatus] = useState<"idle" | "loading" | "success" | "error">("loading")
 
   const fadeIn = useMemo(
     () => ({
@@ -77,12 +77,23 @@ export default function Projects() {
   }
 
   useEffect(() => {
-    const placeIds = Array.from(new Set(projects.map((p) => p.placeId).filter(Boolean))) as string[]
-    if (!placeIds.length) return
+    const placeIds = Array.from(
+      new Set(
+        projects
+          .filter((p) => p.variant === "project")
+          .map((p) => p.placeId)
+          .filter(Boolean),
+      ),
+    ) as string[]
+    if (!placeIds.length) {
+      setStatsStatus("success")
+      return
+    }
 
     let cancelled = false
 
     const fetchStats = async () => {
+      setStatsStatus("loading")
       try {
         const placesRes = await fetch(
           `https://games.roblox.com/v1/games/multiget-place-details?placeIds=${placeIds.join(",")}`,
@@ -101,30 +112,31 @@ export default function Projects() {
         }
 
         const gameMap = new Map(gamesData.map((g: any) => [String(g.id), g]))
-        const nextStats: Record<string, { playing?: number; likeRatio?: number }> = {}
+        const nextStats: Record<string, ProjectStats> = {}
 
         placesJson.forEach((p: any) => {
           const playing = typeof p.playing === "number" ? p.playing : undefined
           const game = gameMap.get(String(p.universeId))
 
-          let likeRatio: number | undefined
+          let likePercentage: number | undefined
+          const visits = typeof game?.visits === "number" ? game.visits : undefined
           if (game && typeof game.upVotes === "number" && typeof game.downVotes === "number") {
             const total = game.upVotes + game.downVotes
             if (total > 0) {
-              likeRatio = Math.round((game.upVotes / total) * 100)
+              likePercentage = Math.round((game.upVotes / total) * 100)
             }
           }
 
-          nextStats[String(p.placeId)] = { playing, likeRatio }
+          nextStats[String(p.placeId)] = { playing, visits, likePercentage }
         })
 
         if (!cancelled) {
           setStats(nextStats)
-          setStatsLoaded(true)
+          setStatsStatus("success")
         }
       } catch (error) {
         console.error("Failed to load Roblox stats", error)
-        if (!cancelled) setStatsLoaded(true)
+        if (!cancelled) setStatsStatus("error")
       }
     }
 
@@ -140,6 +152,47 @@ export default function Projects() {
 
   const prev = () => setActiveIndex((i) => Math.max(0, i - 1))
   const next = () => setActiveIndex((i) => Math.min(media.length - 1, i + 1))
+
+  const renderStats = (placeId?: string, variant?: string) => {
+    if (!placeId || variant !== "project") return null
+
+    const record = stats[placeId]
+    const isLoading = statsStatus === "loading"
+    const isErrored = statsStatus === "error"
+
+    const loadingText = "Loading game metrics..."
+    const errorText = "Metrics unavailable"
+
+    if (isLoading) {
+      return (
+        <div className="flex flex-wrap items-center gap-3 text-xs" aria-live="polite">
+          <span className="rounded-full bg-muted px-3 py-1 font-medium text-foreground">{loadingText}</span>
+        </div>
+      )
+    }
+
+    if (isErrored) {
+      return (
+        <div className="flex flex-wrap items-center gap-3 text-xs" aria-live="polite">
+          <span className="rounded-full bg-muted px-3 py-1 font-medium text-foreground">{errorText}</span>
+        </div>
+      )
+    }
+
+    return (
+      <div className="flex flex-wrap items-center gap-3 text-xs" aria-live="polite">
+        <span className="rounded-full bg-muted px-3 py-1 font-medium text-foreground">
+          {record?.playing !== undefined ? `${record.playing.toLocaleString()} players online` : "Players unavailable"}
+        </span>
+        <span className="rounded-full bg-muted px-3 py-1 font-medium text-foreground">
+          {record?.visits !== undefined ? `${record.visits.toLocaleString()} visits` : "Visits unavailable"}
+        </span>
+        <span className="rounded-full bg-muted px-3 py-1 font-medium text-foreground">
+          {record?.likePercentage !== undefined ? `${record.likePercentage}% like rating` : "Like data unavailable"}
+        </span>
+      </div>
+    )
+  }
 
   const section = (title: string, items: ProjectItem[], description: string) => (
     <div className="space-y-6">
@@ -210,26 +263,9 @@ export default function Projects() {
                     )}
                   </div>
 
-                  {p.placeId && (
-                    <div className="flex flex-wrap items-center gap-3 text-xs">
-                      <span className="rounded-full bg-muted px-3 py-1 font-medium text-foreground">
-                        {statsLoaded
-                          ? stats[p.placeId]?.playing !== undefined
-                            ? `${stats[p.placeId]?.playing?.toLocaleString() ?? 0} players online`
-                            : "Live players unavailable"
-                          : "Fetching players..."}
-                      </span>
-                      <span className="rounded-full bg-muted px-3 py-1 font-medium text-foreground">
-                        {statsLoaded
-                          ? stats[p.placeId]?.likeRatio !== undefined
-                            ? `${stats[p.placeId]?.likeRatio}% like rating`
-                            : "Like data unavailable"
-                          : "Fetching likes..."}
-                      </span>
-                    </div>
-                  )}
+                  {renderStats(p.placeId, p.variant)}
 
-                  {p.link && (
+                  {p.link && p.variant === "project" && (
                     <div className="flex items-center gap-2 text-sm font-semibold text-primary">
                       <ExternalLink className="h-4 w-4" />
                       <a
@@ -255,7 +291,7 @@ export default function Projects() {
                     >
                       View Details
                     </Button>
-                    {p.link && (
+                    {p.link && p.variant === "project" && (
                       <Button
                         size="sm"
                         variant="ghost"
@@ -280,7 +316,7 @@ export default function Projects() {
   )
 
   return (
-    <section id="projects" className="py-20">
+    <section id="published-games" className="py-20">
       <div className="container mx-auto px-4">
         <motion.div
           initial="hidden"
@@ -291,24 +327,24 @@ export default function Projects() {
           className="text-center mb-16"
         >
           <Badge variant="outline" className="mb-4">
-            Portfolio
+            Published games
           </Badge>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Featured Projects</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Published games</h2>
           <div className="w-20 h-1 bg-primary mx-auto" />
         </motion.div>
 
         <div className="space-y-12">
           {section(
-            "Projects",
+            "Published games",
             projects,
-            "Playable builds and systems with quick media previews, live player counts, like ratios, and direct Roblox links.",
+            "Playable builds and systems with quick media previews, live player counts, visit totals, like ratings, and direct Roblox links.",
           )}
         </div>
 
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogContent className="max-w-4xl">
             <DialogHeader>
-              <DialogTitle>{activeProject?.title ?? "Project"}</DialogTitle>
+              <DialogTitle>{activeProject?.title ?? "Published game"}</DialogTitle>
             </DialogHeader>
 
             {activeProject && (
@@ -343,26 +379,9 @@ export default function Projects() {
                   <p className="text-muted-foreground">{activeProject.details}</p>
                 </div>
 
-                {activeProject.placeId && (
-                  <div className="flex flex-wrap items-center gap-3 text-sm">
-                    <Badge variant="secondary">
-                      {statsLoaded
-                        ? stats[activeProject.placeId]?.playing !== undefined
-                          ? `${stats[activeProject.placeId]?.playing?.toLocaleString() ?? 0} players online`
-                          : "Live players unavailable"
-                        : "Fetching players..."}
-                    </Badge>
-                    <Badge variant="secondary">
-                      {statsLoaded
-                        ? stats[activeProject.placeId]?.likeRatio !== undefined
-                          ? `${stats[activeProject.placeId]?.likeRatio}% like rating`
-                          : "Like data unavailable"
-                        : "Fetching likes..."}
-                    </Badge>
-                  </div>
-                )}
+                {activeProject.variant === "project" && renderStats(activeProject.placeId, activeProject.variant)}
 
-                {activeProject.link && (
+                {activeProject.link && activeProject.variant === "project" && (
                   <div className="flex justify-end">
                     <Button asChild>
                       <a href={activeProject.link} target="_blank" rel="noopener noreferrer">
