@@ -42,13 +42,22 @@ function MediaView({ item }: { item: MediaItem }) {
 
   return (
     <div className="w-full overflow-hidden rounded-xl border bg-muted">
-      <img src={item.src} alt="Project media" className="w-full h-auto object-cover" />
+      <img
+        src={item.src}
+        alt="Project media"
+        className="w-full h-auto object-cover"
+        onError={(e) => {
+          e.currentTarget.src = "/placeholder.jpg"
+        }}
+      />
     </div>
   )
 }
 
 export default function Projects() {
   const projects = siteData.projects
+  const showcases = projects.filter((p) => (p.variant ?? "showcase") === "showcase")
+  const fullProjects = projects.filter((p) => p.variant === "project")
   const [open, setOpen] = useState(false)
   const [activeProject, setActiveProject] = useState<ProjectItem | null>(null)
   const [activeIndex, setActiveIndex] = useState(0)
@@ -74,6 +83,103 @@ export default function Projects() {
   const prev = () => setActiveIndex((i) => Math.max(0, i - 1))
   const next = () => setActiveIndex((i) => Math.min(media.length - 1, i + 1))
 
+  const section = (title: string, items: ProjectItem[], description: string) => (
+    <div className="space-y-6">
+      <div className="flex flex-col items-center text-center space-y-2">
+        <h3 className="text-2xl font-semibold">{title}</h3>
+        <p className="text-muted-foreground max-w-2xl">{description}</p>
+      </div>
+      {!items.length && (
+        <div className="w-full rounded-xl border bg-muted/30 px-4 py-6 text-center text-sm text-muted-foreground">
+          Nothing to show yet—new items coming soon.
+        </div>
+      )}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {items.map((p, idx) => (
+          <motion.div
+            key={`${p.title}-${idx}`}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            transition={{ duration: 0.45, delay: idx * 0.03 }}
+            variants={fadeIn}
+          >
+            <Card
+              className="h-full cursor-pointer hover:shadow-lg transition-shadow"
+              onClick={() => openProject(p)}
+              data-variant={p.variant}
+            >
+              <CardContent className="p-0">
+                <div className="aspect-video bg-muted overflow-hidden rounded-t-xl border-b">
+                  {p.media?.[0]?.type === "image" && (
+                    <img
+                      src={p.media[0].src}
+                      alt={p.title}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.src = "/placeholder.jpg"
+                      }}
+                    />
+                  )}
+                  {p.media?.[0]?.type === "video" && (
+                    <iframe
+                      src={toYouTubeEmbed(p.media[0].src)}
+                      title={`${p.title} preview`}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="w-full h-full"
+                    />
+                  )}
+                </div>
+                <div className="p-6 space-y-3">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="space-y-1">
+                      <p className="text-xs uppercase tracking-wide text-primary/80 font-semibold">
+                        {p.header ?? p.title}
+                      </p>
+                      <h3 className="text-lg font-semibold leading-tight">{p.title}</h3>
+                    </div>
+                    <span className="text-xs uppercase tracking-wide text-muted-foreground rounded-full border px-2 py-1">
+                      {p.isTemplate ? "Template" : p.variant === "project" ? "Project" : "Showcase"}
+                    </span>
+                  </div>
+                  <p className="text-sm font-medium">{p.headline}</p>
+                  <p className="text-sm text-muted-foreground line-clamp-3">{p.summary}</p>
+                  <div className="flex items-center justify-between pt-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        openProject(p)
+                      }}
+                    >
+                      View Details
+                    </Button>
+                    {p.variant === "project" && p.link && (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        asChild
+                        onClick={(e) => {
+                          e.stopPropagation()
+                        }}
+                      >
+                        <a href={p.link} target="_blank" rel="noopener noreferrer">
+                          Play
+                        </a>
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  )
+
   return (
     <section id="projects" className="py-20">
       <div className="container mx-auto px-4">
@@ -92,40 +198,17 @@ export default function Projects() {
           <div className="w-20 h-1 bg-primary mx-auto" />
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((p, idx) => (
-            <motion.div
-              key={`${p.title}-${idx}`}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              transition={{ duration: 0.45, delay: idx * 0.03 }}
-              variants={fadeIn}
-            >
-              <Card className="h-full cursor-pointer hover:shadow-lg transition-shadow" onClick={() => openProject(p)}>
-                <CardContent className="p-0">
-                  <div className="aspect-video bg-muted overflow-hidden rounded-t-xl border-b">
-                    {p.media?.[0]?.type === "image" ? (
-                      <img src={p.media[0].src} alt={p.title} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                        Video Preview
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-lg font-semibold">{p.title}</h3>
-                    <p className="text-sm text-muted-foreground mt-2">{p.highlight}</p>
-                    <div className="mt-4">
-                      <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); openProject(p) }}>
-                        View Media
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+        <div className="space-y-16">
+          {section(
+            "Systems & Mechanics (Showcases)",
+            showcases,
+            "Smaller scoped systems and mechanics built to be performant, modular, and easy to slot into larger experiences.",
+          )}
+          {section(
+            "Full Experiences (Projects)",
+            fullProjects,
+            "Complete games and live experiences with production-ready networking, polish, and links to play them.",
+          )}
         </div>
 
         <Dialog open={open} onOpenChange={setOpen}>
@@ -135,7 +218,7 @@ export default function Projects() {
             </DialogHeader>
 
             {activeProject && (
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <MediaView item={media[activeIndex]} />
 
                 <div className="flex items-center justify-between gap-3">
@@ -161,7 +244,20 @@ export default function Projects() {
                   </Button>
                 </div>
 
-                <p className="text-muted-foreground">{activeProject.about}</p>
+                <div className="space-y-2">
+                  <p className="text-sm font-semibold text-foreground">{activeProject.headline}</p>
+                  <p className="text-muted-foreground">{activeProject.details}</p>
+                </div>
+
+                {activeProject.link && (
+                  <div className="flex justify-end">
+                    <Button asChild>
+                      <a href={activeProject.link} target="_blank" rel="noopener noreferrer">
+                        Play on Roblox
+                      </a>
+                    </Button>
+                  </div>
+                )}
               </div>
             )}
           </DialogContent>

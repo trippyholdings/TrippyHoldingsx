@@ -1,14 +1,16 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Menu, X } from "lucide-react"
+import { Menu, Moon, Sun, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { siteData } from "@/lib/site-data"
+import { useTheme } from "@/components/theme-provider"
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const { theme, setTheme } = useTheme()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10)
@@ -53,9 +55,16 @@ export default function Navbar() {
                 {link.name}
               </button>
             ))}
-            <Button asChild>
-              <a href={`mailto:${siteData.contact.email}`}>Hire Me</a>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="border"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
+            <Button onClick={() => scrollToSection("contact")}>Hire Me</Button>
           </nav>
 
           <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
@@ -77,8 +86,17 @@ export default function Navbar() {
                   {link.name}
                 </button>
               ))}
-              <Button className="w-full" asChild>
-                <a href={`mailto:${siteData.contact.email}`}>Hire Me</a>
+              <Button
+                variant="outline"
+                className="w-full justify-start"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                aria-label="Toggle theme"
+              >
+                {theme === "dark" ? <Sun className="h-4 w-4 mr-2" /> : <Moon className="h-4 w-4 mr-2" />}
+                {theme === "dark" ? "Light Mode" : "Dark Mode"}
+              </Button>
+              <Button className="w-full" onClick={() => scrollToSection("contact")}>
+                Hire Me
               </Button>
             </nav>
           </div>
