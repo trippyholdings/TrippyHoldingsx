@@ -64,9 +64,6 @@ export default function Navbar() {
             >
               {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
-            <Button asChild>
-              <a href={`mailto:${siteData.contact.email}`}>Hire Me</a>
-            </Button>
             <Button onClick={() => scrollToSection("contact")}>Hire Me</Button>
           </nav>
 
@@ -98,8 +95,8 @@ export default function Navbar() {
                 {theme === "dark" ? <Sun className="h-4 w-4 mr-2" /> : <Moon className="h-4 w-4 mr-2" />}
                 {theme === "dark" ? "Light Mode" : "Dark Mode"}
               </Button>
-              <Button className="w-full" asChild>
-                <a href={`mailto:${siteData.contact.email}`}>Hire Me</a>
+              <Button className="w-full" onClick={() => scrollToSection("contact")}>
+                Hire Me
               </Button>
             </nav>
           </div>

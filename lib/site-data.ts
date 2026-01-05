@@ -99,6 +99,7 @@ export const siteData = {
       highlight: "Custom fishing mechanics built for Pulau-Indo.",
       about:
         "Designed and implemented a responsive fishing system with timing-based inputs, rarity tables, and server-authoritative anti-exploit checks tailored for Pulau-Indo.",
+      link: "https://www.roblox.com/games/7061896812/Pulau-Indo",
     },
     {
       variant: "showcase",
@@ -118,6 +119,7 @@ export const siteData = {
       highlight: "Simplified Buckshot-inspired PvP built inside Pulau-Indo.",
       about:
         "Lightweight loadout selection, short rounds, and snappy hit detection optimized for quick matchmaking inside the main experience.",
+      link: "https://www.roblox.com/games/7061896812/Pulau-Indo",
     },
     {
       variant: "showcase",
@@ -137,6 +139,7 @@ export const siteData = {
       highlight: "Fast-paced boxing minigame for Pulau-Indo.",
       about:
         "Built state-driven combat with stamina, stun windows, KO cinematics, and anti-cheat checks to keep gameplay fair in public lobbies.",
+      link: "https://www.roblox.com/games/7061896812/Pulau-Indo",
     },
 
     // Keep your template if you want

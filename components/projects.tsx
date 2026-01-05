@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronLeft, ChevronRight, ExternalLink } from "lucide-react"
 import { siteData, type MediaItem, type ProjectItem } from "@/lib/site-data"
 
 function toYouTubeEmbed(url: string) {
@@ -131,20 +131,42 @@ export default function Projects() {
                     />
                   )}
                 </div>
-                <div className="p-6 space-y-3">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="space-y-1">
-                      <p className="text-xs uppercase tracking-wide text-primary/80 font-semibold">
-                        {p.header ?? p.title}
-                      </p>
-                      <h3 className="text-lg font-semibold leading-tight">{p.title}</h3>
+                <div className="p-6 space-y-4">
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="space-y-1">
+                        <p className="text-xs uppercase tracking-wide text-primary/80 font-semibold">
+                          {p.header ?? p.title}
+                        </p>
+                        <h3 className="text-lg font-semibold leading-tight">{p.title}</h3>
+                      </div>
+                      <Badge variant="secondary" className="uppercase tracking-wide">
+                        {p.isTemplate ? "Template" : p.variant === "project" ? "Project" : "Showcase"}
+                      </Badge>
                     </div>
-                    <span className="text-xs uppercase tracking-wide text-muted-foreground rounded-full border px-2 py-1">
-                      {p.isTemplate ? "Template" : p.variant === "project" ? "Project" : "Showcase"}
-                    </span>
+                    {(p.headline ?? p.highlight) && (
+                      <p className="text-sm font-semibold text-foreground">{p.headline ?? p.highlight}</p>
+                    )}
+                    {(p.summary ?? p.about) && (
+                      <p className="text-sm text-muted-foreground">{p.summary ?? p.about}</p>
+                    )}
                   </div>
-                  <p className="text-sm font-medium">{p.headline}</p>
-                  <p className="text-sm text-muted-foreground line-clamp-3">{p.summary}</p>
+
+                  {p.link && (
+                    <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+                      <ExternalLink className="h-4 w-4" />
+                      <a
+                        href={p.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:underline"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        Play on Roblox
+                      </a>
+                    </div>
+                  )}
+
                   <div className="flex items-center justify-between pt-2">
                     <Button
                       variant="outline"
@@ -156,7 +178,7 @@ export default function Projects() {
                     >
                       View Details
                     </Button>
-                    {p.variant === "project" && p.link && (
+                    {p.link && (
                       <Button
                         size="sm"
                         variant="ghost"
@@ -198,52 +220,18 @@ export default function Projects() {
           <div className="w-20 h-1 bg-primary mx-auto" />
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((p, idx) => (
-            <motion.div
-              key={`${p.title}-${idx}`}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              transition={{ duration: 0.45, delay: idx * 0.03 }}
-              variants={fadeIn}
-            >
-              <Card className="h-full cursor-pointer hover:shadow-lg transition-shadow" onClick={() => openProject(p)}>
-                <CardContent className="p-0">
-                  <div className="aspect-video bg-muted overflow-hidden rounded-t-xl border-b">
-                    {p.media?.[0]?.type === "image" && (
-                      <img
-                        src={p.media[0].src}
-                        alt={p.title}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          e.currentTarget.src = "/placeholder.jpg"
-                        }}
-                      />
-                    )}
-                    {p.media?.[0]?.type === "video" && (
-                      <iframe
-                        src={toYouTubeEmbed(p.media[0].src)}
-                        title={`${p.title} preview`}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        className="w-full h-full"
-                      />
-                    )}
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-lg font-semibold">{p.title}</h3>
-                    <p className="text-sm text-muted-foreground mt-2">{p.highlight}</p>
-                    <div className="mt-4">
-                      <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); openProject(p) }}>
-                        View Media
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+        <div className="space-y-12">
+          {section(
+            "Showcases",
+            showcases,
+            "Hands-on system demos with quick summaries, direct Roblox links, and media you can preview at a glance.",
+          )}
+
+          {section(
+            "Projects & Templates",
+            fullProjects,
+            "Playable builds and reusable templates, complete with immediate Roblox links and deeper details in the modal view.",
+          )}
         </div>
 
         <Dialog open={open} onOpenChange={setOpen}>
