@@ -395,7 +395,7 @@ export default function Projects() {
                 {activeProject.link && activeProject.variant === "project" && (
                   <div className="flex justify-end">
                     <Button asChild>
-                      <a href={playHref(activeProject)} target="_blank" rel="noopener noreferrer">
+                      <a href={activeProject.link} target="_blank" rel="noopener noreferrer">
                         Play on Roblox
                       </a>
                     </Button>
