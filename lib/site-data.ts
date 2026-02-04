@@ -47,11 +47,9 @@ export const siteData = {
     stats: [
       { value: "4+", label: "Years of Experience" },
       { value: "30M+", label: "Total Visits Contributed" },
-      { value: "12", label: "Shipped Systems" },
     ],
     skills: [
       "LuaU",
-      "Roblox Studio",
       "Networking",
       "Combat Systems",
       "Ability Systems",
@@ -59,13 +57,13 @@ export const siteData = {
       "DataStore",
       "ProfileStore",
       "Optimization",
-      "Tweening",
       "VFX",
       "Sound",
       "State Machines",
       "Procedural Generation",
       "Tool Systems",
       "A-Chassis Tuning",
+      "Modular Systems"
     ],
     links: {
       roblox: "https://www.roblox.com/users/1035292126/profile",
@@ -80,11 +78,7 @@ export const siteData = {
       headline: "Responsive fishing gameplay loop",
       placeId: "7061896812",
       media: [
-        {
-          type: "image",
-          src: "https://media.discordapp.net/attachments/1374068118883668110/1410367022501511258/image.png?format=webp&quality=lossless",
-        },
-        { type: "video", src: "https://www.youtube.com/watch?v=0PMvbL0X2oA" },
+        { type: "video", src: "https://www.youtube.com/watch?v=_AslHde6hi8" },
       ],
       summary: "Custom fishing mechanics built for Pulau-Indo.",
       details:
@@ -102,10 +96,6 @@ export const siteData = {
       placeId: "7061896812",
       media: [
         { type: "video", src: "https://www.youtube.com/watch?v=ZbhnuObByh8" },
-        {
-          type: "image",
-          src: "https://media.discordapp.net/attachments/1374068118883668110/1410367097527341146/image.png?format=webp&quality=lossless",
-        },
       ],
       summary: "Simplified Buckshot-inspired PvP built inside Pulau-Indo.",
       details:
@@ -123,10 +113,6 @@ export const siteData = {
       placeId: "7061896812",
       media: [
         { type: "video", src: "https://www.youtube.com/watch?v=SPy6t3L-9YY" },
-        {
-          type: "image",
-          src: "https://media.discordapp.net/attachments/1374068118883668110/1410367032289005729/image.png?format=webp&quality=lossless",
-        },
       ],
       summary: "Fast-paced boxing minigame for Pulau-Indo.",
       details:
@@ -145,7 +131,7 @@ export const siteData = {
       media: [
         {
           type: "image",
-          src: "https://media.discordapp.net/attachments/1374068118883668110/1410367022501511258/image.png?format=webp&quality=lossless",
+          src: "https://tr.rbxcdn.com/180DAY-fbeb72e4a087da33c7870a503b0c7cfc/768/432/Image/Webp/noFilter",
         },
       ],
       summary: "Live Roblox experience showcasing the full gameplay loop.",
