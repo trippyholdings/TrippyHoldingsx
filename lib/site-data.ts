@@ -138,10 +138,10 @@ export const siteData = {
     },
     {
       variant: "project",
-      title: "Pulau-Indo (Live)",
+      title: "Pulau-Indo",
       header: "Published Game",
       headline: "Live experience with active playerbase",
-      placeId: "7061896812",
+      placeId: "116271475876333",
       media: [
         {
           type: "image",
@@ -154,7 +154,7 @@ export const siteData = {
       highlight: "Live Roblox experience with persistent systems.",
       about:
         "End-to-end experience including combat, fishing, and matchmaking systems with production-ready networking and UI polish.",
-      link: "https://www.roblox.com/games/7061896812/Pulau-Indo",
+      link: "https://www.roblox.com/games/116271475876333/Pulau-Indo-18",
     },
   ] as ProjectItem[],
 
