@@ -54,6 +54,25 @@ function MediaView({ item }: { item: MediaItem }) {
   )
 }
 
+function playLaunchHref(p: ProjectItem) {
+  if (p.variant !== "project") return undefined
+  const placeId = p.placeId?.trim()
+  if (placeId) return `roblox://experiences/start?placeId=${encodeURIComponent(placeId)}`
+  return undefined
+}
+
+function playOnRobloxHref(p: ProjectItem) {
+  if (p.variant !== "project") return undefined
+
+  const placeId = p.placeId?.trim()
+  if (placeId) return `https://www.roblox.com/games/${encodeURIComponent(placeId)}/-`
+
+  const link = p.link?.trim()
+  if (link) return link
+
+  return undefined
+}
+
 export default function Projects() {
   const projects = siteData.projects
   const publishedGames = useMemo(() => projects.filter((p) => p.variant === "project"), [projects])
@@ -79,9 +98,7 @@ export default function Projects() {
   }
 
   useEffect(() => {
-    const placeIds = Array.from(
-      new Set(publishedGames.map((p) => p.placeId).filter(Boolean)),
-    ) as string[]
+    const placeIds = Array.from(new Set(publishedGames.map((p) => p.placeId).filter(Boolean))) as string[]
     if (!placeIds.length) {
       setStatsStatus("success")
       return
@@ -191,12 +208,6 @@ export default function Projects() {
     )
   }
 
-  const playHref = (p: ProjectItem) => {
-    if (p.variant !== "project") return undefined
-    if (p.placeId) return `roblox://placeId=${p.placeId}`
-    return p.link
-  }
-
   const section = (title: string, items: ProjectItem[], description: string, showStats: boolean) => (
     <div className="space-y-6">
       <div className="flex flex-col items-center text-center space-y-2">
@@ -205,115 +216,119 @@ export default function Projects() {
       </div>
       {!items.length && (
         <div className="w-full rounded-xl border bg-muted/30 px-4 py-6 text-center text-sm text-muted-foreground">
-          Nothing to show yet—new items coming soon.
+          Nothing to show yet, new items coming soon.
         </div>
       )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {items.map((p, idx) => (
-          <motion.div
-            key={`${p.title}-${idx}`}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            transition={{ duration: 0.45, delay: idx * 0.03 }}
-            variants={fadeIn}
-          >
-            <Card
-              className="h-full cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => openProject(p)}
-              data-variant={p.variant}
+        {items.map((p, idx) => {
+          const robloxWeb = playOnRobloxHref(p)
+          const playLaunch = playLaunchHref(p)
+
+          return (
+            <motion.div
+              key={`${p.title}-${idx}`}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              transition={{ duration: 0.45, delay: idx * 0.03 }}
+              variants={fadeIn}
             >
-              <CardContent className="p-0">
-                <div className="aspect-video bg-muted overflow-hidden rounded-t-xl border-b">
-                  {p.media?.[0]?.type === "image" && (
-                    <img
-                      src={p.media[0].src}
-                      alt={p.title}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        e.currentTarget.src = "/placeholder.jpg"
-                      }}
-                    />
-                  )}
-                  {p.media?.[0]?.type === "video" && (
-                    <iframe
-                      src={toYouTubeEmbed(p.media[0].src)}
-                      title={`${p.title} preview`}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="w-full h-full"
-                    />
-                  )}
-                </div>
-                <div className="p-6 space-y-4">
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="space-y-1">
-                        <p className="text-xs uppercase tracking-wide text-primary/80 font-semibold">
-                          {p.header ?? p.title}
-                        </p>
-                        <h3 className="text-lg font-semibold leading-tight">{p.title}</h3>
-                      </div>
-                      <Badge variant="secondary" className="uppercase tracking-wide">
-                        {p.variant === "project" ? "Project" : "Showcase"}
-                      </Badge>
-                    </div>
-                    {(p.headline ?? p.highlight) && (
-                      <p className="text-sm font-semibold text-foreground">{p.headline ?? p.highlight}</p>
+              <Card
+                className="h-full cursor-pointer hover:shadow-lg transition-shadow"
+                onClick={() => openProject(p)}
+                data-variant={p.variant}
+              >
+                <CardContent className="p-0">
+                  <div className="aspect-video bg-muted overflow-hidden rounded-t-xl border-b">
+                    {p.media?.[0]?.type === "image" && (
+                      <img
+                        src={p.media[0].src}
+                        alt={p.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.src = "/placeholder.jpg"
+                        }}
+                      />
                     )}
-                    {(p.summary ?? p.about) && (
-                      <p className="text-sm text-muted-foreground">{p.summary ?? p.about}</p>
+                    {p.media?.[0]?.type === "video" && (
+                      <iframe
+                        src={toYouTubeEmbed(p.media[0].src)}
+                        title={`${p.title} preview`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="w-full h-full"
+                      />
                     )}
                   </div>
-
-                  {showStats && renderStats(p.placeId, p.variant)}
-
-                  {p.link && p.variant === "project" && (
-                    <div className="flex items-center gap-2 text-sm font-semibold text-primary">
-                      <ExternalLink className="h-4 w-4" />
-                      <a
-                        href={playHref(p)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:underline"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        Play on Roblox
-                      </a>
+                  <div className="p-6 space-y-4">
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="space-y-1">
+                          <p className="text-xs uppercase tracking-wide text-primary/80 font-semibold">
+                            {p.header ?? p.title}
+                          </p>
+                          <h3 className="text-lg font-semibold leading-tight">{p.title}</h3>
+                        </div>
+                        <Badge variant="secondary" className="uppercase tracking-wide">
+                          {p.variant === "project" ? "Project" : "Showcase"}
+                        </Badge>
+                      </div>
+                      {(p.headline ?? p.highlight) && (
+                        <p className="text-sm font-semibold text-foreground">{p.headline ?? p.highlight}</p>
+                      )}
+                      {(p.summary ?? p.about) && <p className="text-sm text-muted-foreground">{p.summary ?? p.about}</p>}
                     </div>
-                  )}
 
-                  <div className="flex items-center justify-between pt-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        openProject(p)
-                      }}
-                    >
-                      View Details
-                    </Button>
-                    {p.link && p.variant === "project" && (
+                    {showStats && renderStats(p.placeId, p.variant)}
+
+                    {robloxWeb && p.variant === "project" && (
+                      <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+                        <ExternalLink className="h-4 w-4" />
+                        <a
+                          href={robloxWeb}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:underline"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          Play on Roblox
+                        </a>
+                      </div>
+                    )}
+
+                    <div className="flex items-center justify-between pt-2">
                       <Button
+                        variant="outline"
                         size="sm"
-                        variant="ghost"
-                        asChild
                         onClick={(e) => {
                           e.stopPropagation()
+                          openProject(p)
                         }}
                       >
-                        <a href={playHref(p)} target="_blank" rel="noopener noreferrer">
-                          Play
-                        </a>
+                        View Details
                       </Button>
-                    )}
+
+                      {playLaunch && p.variant === "project" && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          asChild
+                          onClick={(e) => {
+                            e.stopPropagation()
+                          }}
+                        >
+                          <a href={playLaunch} target="_blank" rel="noopener noreferrer">
+                            Play
+                          </a>
+                        </Button>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        ))}
+                </CardContent>
+              </Card>
+            </motion.div>
+          )
+        })}
       </div>
     </div>
   )
@@ -392,13 +407,23 @@ export default function Projects() {
 
                 {activeProject.variant === "project" && renderStats(activeProject.placeId, activeProject.variant)}
 
-                {activeProject.link && activeProject.variant === "project" && (
-                  <div className="flex justify-end">
-                    <Button asChild>
-                      <a href={activeProject.link} target="_blank" rel="noopener noreferrer">
-                        Play on Roblox
-                      </a>
-                    </Button>
+                {activeProject.variant === "project" && (
+                  <div className="flex justify-end gap-2">
+                    {playOnRobloxHref(activeProject) && (
+                      <Button variant="outline" asChild>
+                        <a href={playOnRobloxHref(activeProject)} target="_blank" rel="noopener noreferrer">
+                          Play on Roblox
+                        </a>
+                      </Button>
+                    )}
+
+                    {playLaunchHref(activeProject) && (
+                      <Button asChild>
+                        <a href={playLaunchHref(activeProject)} target="_blank" rel="noopener noreferrer">
+                          Play
+                        </a>
+                      </Button>
+                    )}
                   </div>
                 )}
               </div>
