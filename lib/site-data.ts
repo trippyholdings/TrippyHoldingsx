@@ -99,7 +99,36 @@ export const siteData = {
       about:
         "Worked across the core experience: combat, fishing, and minigames, plus production-ready networking and UI. Focused on performance, consistency in public servers, and systems that are easy to expand.",
       link: "https://www.roblox.com/games/112702357619883/Pulau-Indo",
+{
+  variant: "project",
+  title: "Park A Car",
+  header: "Published Game",
+  headline: "Stage-based parking and progression game",
+  placeId: "113720203996283",
+  media: [
+    {
+      type: "image",
+      src: "https://tr.rbxcdn.com/180DAY-5fcc794d3e8e3036e50475eff3f43e74/768/432/Image/Webp/noFilter",
     },
+    {
+      type: "image",
+      src: "https://tr.rbxcdn.com/180DAY-f03b06f0441d2b7ef389712c80d0254f/768/432/Image/Webp/noFilter",
+    },
+    {
+      type: "image",
+      src: "https://tr.rbxcdn.com/180DAY-1c1e0294711b7e3f099b9db87ec334b2/768/432/Image/Webp/noFilter",
+    },
+    { type: "video", src: "https://www.youtube.com/watch?v=0dwp6Thc-4I" },
+  ],
+  summary: "A parking game built around stage progression, car upgrades, and rebirths.",
+  details:
+    "Built the entire game system stack, including server-side logic, car spawning and handling, plot and parking management, data saving, crash and bump detection, and progression systems such as rebirths and a tycoon-style upgrade loop. Focused on stable vehicle behavior, fair collision handling, and systems that can scale as more cars and stages are added.",
+  highlight: "Full progression-based parking game with cars, plots, and rebirth systems.",
+  about:
+    "Built the entire game system stack, including server-side logic, car spawning and handling, plot and parking management, data saving, crash and bump detection, and progression systems such as rebirths and a tycoon-style upgrade loop. Focused on stable vehicle behavior, fair collision handling, and systems that can scale as more cars and stages are added.",
+  link: "https://www.roblox.com/games/113720203996283/Park-a-Car",
+},
+
   ] as ProjectItem[],
 
   contact: {
