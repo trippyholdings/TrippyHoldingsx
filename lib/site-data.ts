@@ -9,7 +9,7 @@ export const siteData = {
       "https://cdn.discordapp.com/attachments/1374068118883668110/1457492096070975498/assets_task_01jzgs58y1fnr9q10xj6503znp_1751836191_img_0.webp",
     stats: [
       { value: "3+ years", label: "Development experience" },
-      { value: "30M+", label: "Total visits contributed" },
+      { value: "35M+", label: "Total visits contributed" },
     ],
     skills: [
       "LuaU",
