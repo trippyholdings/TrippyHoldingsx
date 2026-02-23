@@ -334,7 +334,7 @@ export default function Projects() {
   )
 
   return (
-    <section id="published-games" className="py-20">
+    <section id="" className="py-20">
       <div className="container mx-auto px-4">
         <motion.div
           initial="hidden"
@@ -353,7 +353,7 @@ export default function Projects() {
 
         <div className="space-y-12">
           {section(
-            "Published games",
+            "",
             publishedGames,
             "Playable builds and systems with quick media previews, live player counts, visit totals, like ratings, and direct Roblox links.",
             true,
